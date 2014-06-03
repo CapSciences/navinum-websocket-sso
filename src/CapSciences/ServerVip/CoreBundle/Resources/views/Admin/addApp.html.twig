@@ -1,0 +1,56 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base.html.twig' %}
+
+
+{# On utilise notre propre rendu de formulaire #}
+{% form_theme form _self %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="form-text control-group">
+            {{ form_label(form) }}
+            <div>{{ form_errors(form) }}</div>
+            <div class="controls">
+                {{ form_widget(form) }}
+            </div>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{% block form_label %}
+    {% spaceless %}
+        {% if not compound %}
+            {% set label_attr = label_attr|merge({'for': id}) %}
+        {% endif %}
+        {% if required %}
+            {% set label_attr = label_attr|merge({'class': (label_attr.class|default('') ~ ' required')|trim}) %}
+        {% endif %}
+        {% if label is empty %}
+            {% set label = name|humanize %}
+        {% endif %}
+        <label class="control-label" {% for attrname, attrvalue in label_attr %} {{ attrname }}="{{ attrvalue }}"{% endfor %}>{{ label|trans({}, translation_domain) }}</label>
+    {% endspaceless %}
+{% endblock form_label %}
+
+
+{% block form_widget_simple %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        <input placeholder="{{ label }}"
+               type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %}/>
+    {% endspaceless %}
+{% endblock form_widget_simple %}
+{% block content %}
+    <form class="form-horizontal" action="{{ path('capsciences_servervip_core_admin_addapp') }}"
+          method="post" {{ form_enctype(form) }}
+          id="form-already">
+        <fieldset>
+            <legend>{% trans %}Add authorization{% endtrans %}</legend>
+            {{ form_widget(form) }}
+            <div class="control-group">
+                <div class="controls" class="form-button">
+                    <button type="submit" class="btn btn-success">{% trans %}Add{% endtrans %}</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+{% endblock %}

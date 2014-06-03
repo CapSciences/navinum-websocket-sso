@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <parameters>
+        <parameter key="cap_sciences_server_vip_core.form.handler.usertype.class">CapSciences\ServerVip\CoreBundle\Form\Handler\UserTypeHandler</parameter>
+        <parameter key="cap_sciences_server_vip_core.mailer.class">CapSciences\ServerVip\CoreBundle\Mailer</parameter>
+        <parameter key="cap_sciences_server_vip_core.mailer.visiteur.class">CapSciences\ServerVip\CoreBundle\Mailer\VisiteurMailer</parameter>
+        <parameter key="cap_sciences_server_vip_core.listener.locale.class">CapSciences\ServerVip\CoreBundle\Listener\LocaleListener</parameter>
+
+    </parameters>
+
+    <services>
+
+        <service id="cap_sciences_server_vip_core.mailer" class="%cap_sciences_server_vip_core.mailer.class%" abstract="true">
+            <argument type="service" id="service_container" />
+            <argument>%mail_sender%</argument>
+        </service>
+
+        <service id="cap_sciences_server_vip_core.mailer.visiteur" class="%cap_sciences_server_vip_core.mailer.visiteur.class%" parent="cap_sciences_server_vip_core.mailer" />
+
+        <service id="cap_sciences_server_vip_core.listener.locale" class="%cap_sciences_server_vip_core.listener.locale.class%" >
+            <argument>%locale%</argument>
+            <tag name="kernel.event_listener" event="kernel.request" method="onKernelRequest"/>
+        </service>
+
+        <service id="cap_sciences_server_vip_core.form.handler.usertype" class="%cap_sciences_server_vip_core.form.handler.usertype.class%">
+            <argument type="service" id="cap_sciences_server_vip_navinum.providers.visiteur" />
+            <argument type="service" id="cap_sciences_server_vip_core.mailer.visiteur" />
+        </service>
+
+        <service id="navinum.security.authentication.provider" class="CapSciences\ServerVip\CoreBundle\Security\Authentication\Provider\NavinumProvider" public="false">
+            <argument type="service" id="cap_sciences_server_vip_navinum.providers.visiteur" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="navinum.security.authentication.listener" class="CapSciences\ServerVip\CoreBundle\Security\Http\Firewall\NavinumAuthenticationListener" public="false" abstract="true">
+            <tag name="monolog.logger" channel="security" />
+            <argument type="service" id="security.context" />
+            <argument type="service" id="security.authentication.manager" />
+            <argument type="service" id="security.authentication.session_strategy" />
+            <argument type="service" id="security.http_utils" />
+            <argument />
+            <argument type="collection"></argument>
+            <argument type="service" id="logger" on-invalid="null" />
+            <argument type="service" id="event_dispatcher" on-invalid="null" />
+            <argument type="service" id="service_container" />
+        </service>
+
+        <service id="navinum.security.authentication.entry_point" class="CapSciences\ServerVip\CoreBundle\Security\Http\EntryPoint\NavinumAuthenticationEntryPoint" public="false" abstract="true">
+            <argument type="service" id="security.http_utils" />
+
+        </service>
+
+        <service id="navinum_user_provider" class="CapSciences\ServerVip\CoreBundle\Security\User\NavinumUserProvider">
+            <argument type="service" id="cap_sciences_server_vip_navinum.providers.visiteur" />
+        </service>
+
+        <service id="cap_sciences_server_vip_core.facebook" class="Facebook" lazy="true">
+            <argument type="collection">
+                <argument key="appId">%api_facebook_id%</argument>
+                <argument key="secret">%api_facebook_secret%</argument>
+            </argument>
+        </service>
+
+    </services>
+
+</container>

@@ -1,0 +1,54 @@
+'Account destruction successfull': 'Account destruction successfull'
+Back: Back
+Delete: Delete
+'Are you sure you want delete your account ?': 'Are you sure you want delete your account ?'
+'Your photo has been send': 'Your photo has been send'
+'Error during photo send': 'Error during photo send'
+Add: Add
+Id: '#'
+Name: Name
+Host: Host
+Key: Key
+Secret: Secret
+Actions: Actions
+'Add authorization': 'Add authorization'
+'Lost login': 'Lost login'
+'Lost password': 'Lost password'
+'Choose how you want retrieve your login': 'Choose how you want retrieve your login'
+'Choose how you want retrieve your password': 'Choose how you want retrieve your password'
+Email: Email
+Mobile: Mobile
+Thanks: Thanks
+'A sms has been send with your login to': 'A sms has been send with your login to'
+'An email has been send with your login to': 'An email has been send with your login to'
+'Please fill in the boxes for email and mobile phone number.': 'Please fill in the boxes for email and mobile phone number.'
+'Please fill in the box for email.': 'Please fill in the box for email.'
+Ok: Ok
+'Discover our galaxy': 'Discover our galaxy'
+'Register account': 'Register account'
+Login: Login
+'Mail Address': 'Mail Address'
+Password: Password
+'Password confirmation': 'Password confirmation'
+'Newsletter signup': 'Newsletter signup'
+'I am agree to the <a target="_blank" href="http://servervip.projects.clever-age.net/cgu/cgu-fr.html">terms of service</a>.': 'I am agree to the <a target="_blank" href="http://servervip.projects.clever-age.net/cgu/cgu-en.html">terms of service</a>.'
+Signup: Signup
+'You have an account ?&nbsp;': 'You have an account ?&nbsp;'
+'I forgot my login': 'I forgot my login'
+'I forgot my password': 'I forgot my password'
+Signin: Signin
+'A sms has been send with your password to': '__A sms has been send with your password to'
+'An email has been send with your password to': '__An email has been send with your password to'
+'Please fill in the boxes for login and mobile phone number.': 'Please fill in the boxes for login and mobile phone number.'
+'Please fill in the boxes for login and email.': 'Please fill in the boxes for login and email.'
+'Account created': 'Account created'
+'An email has been sent.': 'An email has been sent.'
+'Click on the inbox link to validate your email address and activate your account.': 'Click on the inbox link to validate your email address and activate your account.'
+'Go to signin': 'Go to signin'
+'Account activated': 'Account activated'
+'Your account is activated.': 'Your account is activated.'
+'Mobile phone number': 'Mobile phone number'
+'A sms has been send with your login': 'A sms has been send with your login'
+'An email has been send with your login': 'A email has been send with your login'
+'A sms has been send with your password': 'A sms has been send with your password'
+'An email has been send with your password': 'A email has been send with your password'

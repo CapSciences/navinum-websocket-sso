@@ -1,0 +1,59 @@
+security:
+    encoders:
+        Symfony\Component\Security\Core\User\User: plaintext
+
+    role_hierarchy:
+        ROLE_ADMIN:       ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        in_memory:
+            memory:
+                users:
+                    admin: { password: yourpassword, roles: 'ROLE_ADMIN' }
+        navinum:
+            id: navinum_user_provider
+
+    firewalls:
+        dev:
+            pattern:  ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        monitor:
+            pattern: ^/websockets
+            http_basic:
+                provider: in_memory
+                realm: "CapSciences : Websockets Monitoring"
+
+        admin:
+            pattern: ^/admin
+            http_basic:
+                provider: in_memory
+                realm: "CapSciences : Administration"
+
+        oauth_token:
+            pattern:    ^/oauth/v2/token
+            security:   false
+
+        oauth_authorize:
+            pattern:    ^/(facebook|user|oauth\/v2\/auth$)
+            anonymous:  ~
+            navinum:
+                provider: navinum_user_provider
+                login_path: /user/security/login
+                check_path: /user/security/login_check
+            logout:
+                path:   /user/security/logout
+                target: /
+
+        sso:
+            pattern:    ^/sso
+            fos_oauth:  true
+            stateless:  true
+
+
+    access_control:
+        - { path: ^/user/security/login$, roles: [IS_AUTHENTICATED_ANONYMOUSLY]}
+        - { path: ^/user, roles: [IS_AUTHENTICATED_FULLY]}
+        - { path: ^/oauth/v2/auth, roles: [IS_AUTHENTICATED_FULLY]}
+        - { path: ^/sso, roles: [ IS_AUTHENTICATED_FULLY ] }

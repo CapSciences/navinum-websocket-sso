@@ -1,0 +1,175 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base.html.twig' %}
+
+{% block javascript_after %}
+    <script type="text/javascript" src="{{ asset('bundles/capsciencesservervipwebsocket/js/network.js') }}"></script>
+{% endblock %}
+
+{% block javascript_bottom %}
+    <script type="text/javascript">
+        IO.open({
+                    url: 'ws://'+window.location.hostname+':{{ websocket_port }}'
+                });
+    </script>
+{% endblock %}
+
+{% block content %}
+
+    <table id="connected_client" class="table table-bordered table-stripped">
+        <thead>
+        <tr>
+            <th>Connexion Id.</th>
+            <th>IP</th>
+            <th>Mac</th>
+            <th>Heartbeat Time</th>
+            <th>Flotte</th>
+            <th>Interactif</th>
+            <th>Visiteur</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+    <script type="text/javascript">
+        function addConnected(data) {
+            createLineFromClient(data)
+        }
+
+        function removeConnected(data) {
+            $('#connected_client tbody tr[data-identifier='+data.uid+']').remove();
+        }
+
+        function updateConnected(data) {
+            createLineFromClient(data, $('#connected_client tbody tr[data-identifier='+data.uid+']'))
+        }
+
+        function initialize(data) {
+            for (var i in data.clients) {
+                createLineFromClient(data.clients[i])
+            }
+        }
+
+        function createLineFromClient(client, tr) {
+            if(tr == undefined) {
+                var tr = $('<tr />');
+                tr.attr('data-identifier', client.uid)
+                $('#connected_client tbody').append(tr);
+            }
+            else {
+                tr.empty();
+            }
+
+            if(client.isMonitor) {
+                tr.css('background', '#EFEFDF').css('color', '#A0A0A0');
+            }
+
+            var tdConnexionId = $('<td />');
+            tdConnexionId.text(client.uid);
+            tr.append(tdConnexionId);
+
+            var tdRemoteAddress = $('<td />');
+            tdRemoteAddress.text(client.remoteAddress);
+            tr.append(tdRemoteAddress);
+
+            var tdMac = $('<td />');
+            tdMac.text(client.macAddress);
+            tr.append(tdMac);
+
+            var tdHeartbeat = $('<td />');
+            tdHeartbeat.text(client.lastHeartbeat);
+            tr.append(tdHeartbeat);
+
+            var tdFlotte = $('<td />');
+            tdFlotte.text(client.flotte);
+            tr.append(tdFlotte);
+
+            var tdInteractif = $('<td />');
+            tdInteractif.text(client.interactif);
+            tr.append(tdInteractif);
+
+            var tdVisiteur = $('<td />');
+            tdVisiteur.text(client.visiteur);
+            tr.append(tdVisiteur);
+
+            var tdAction = $('<td />');
+            if(!client.isMonitor) {
+
+                var $divBtnGroup = $('<div class="btn-group"><a href="#" class="btn dropdown-toggle" data-toggle="dropdown" >Actions <span class="caret"></span></a><ul class="dropdown-menu"></ul></div>');
+
+                var btnSendNotifTest = $('<li><a href="#">Notif Test</a></li>');
+                btnSendNotifTest.find('a').click(function(source) {
+                    var uid = $(source.srcElement).parent().parent().parent().parent().parent().attr('data-identifier');
+                    IO.send('notification.send', {
+                        dest: 'conn:'+uid,
+                        type: 'general:notif',
+                        options: {
+                            title: 'Nouvelle médaille ! (' + new Date().toDateString() + ' ' + new Date().toTimeString() + ')',
+                            message: 'Coucou depuis l\'interface de monitoring (' + Math.random().toString(36).substr(2, 5) + ')'
+                        }
+                    });
+
+                    return false;
+                });
+                $divBtnGroup.find('.dropdown-menu').append(btnSendNotifTest);
+
+                var btnSendMessageTest = $('<li><a href="#">Message Test</a></li>');
+                btnSendMessageTest.find('a').click(function(source) {
+                    var uid = $(source.srcElement).parent().parent().parent().parent().parent().attr('data-identifier');
+                    IO.send('notification.send', {
+                        dest: 'conn:'+uid,
+                        type: 'general:message',
+                        options: {
+                            title: 'Message de service',
+                            message: 'Ceci est un test de message de service. Amusez vous bien !'
+                        }
+                    });
+
+                    return false;
+                });
+                $divBtnGroup.find('.dropdown-menu').append(btnSendMessageTest);
+
+                var btnSendReset = $('<li><a href="#">Reset</a></li>');
+                btnSendReset.click(function(source) {
+                    var uid = $(source.srcElement).parent().parent().parent().parent().parent().attr('data-identifier');
+                    IO.send('core.reset', {
+                        dest: uid
+                    });
+                    return false;
+                });
+                $divBtnGroup.find('.dropdown-menu').append(btnSendReset);
+
+                tdAction.append($divBtnGroup);
+
+            }
+            tr.append(tdAction);
+        }
+
+        IO.onConnected(function () {
+            IO.bind('monitor.addConnected', function (data) {
+                addConnected(data);
+            });
+            IO.bind('monitor.removeConnected', function (data) {
+                removeConnected(data);
+            });
+            IO.bind('monitor.updateConnected', function (data) {
+                updateConnected(data);
+            });
+            IO.bind('monitor.initialize', function (data) {
+                initialize(data);
+            });
+
+            IO.bind('core.heartbeat', function(data) {
+                IO.send('core.heartbeat', data);
+            })
+
+            IO.send('monitor.handshake', {});
+        });
+
+        IO.onDisconnected(function() {
+            $('#connected_client tbody').empty();
+        });
+    </script>
+
+{% endblock %}

@@ -1,0 +1,12 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{% block content %}
+    <div class="page">
+        {% trans %}Account destruction successfull{% endtrans %}
+        <div class="back-home">
+            <a href="{{ path('capsciences_servervip_core_security_login') }}">
+                {% trans %}Back{% endtrans %}
+            </a>
+        </div>
+    </div>
+{% endblock %}

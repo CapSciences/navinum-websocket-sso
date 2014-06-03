@@ -1,0 +1,13 @@
+<div class="btn-group">
+    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#" id="langue_dropdown" role="button" >
+        {{ attribute(langue_choices, app.request.locale) }}
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu" aria-labelledby="langue_dropdown">
+        {% for key, langue in langue_choices %}
+            <li>
+                <a href="{{ path('capsciences_servervip_layout_language_change', {'_locale': key}) }}">{{ langue }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+</div>

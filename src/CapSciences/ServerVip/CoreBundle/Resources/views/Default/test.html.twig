@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Websocket</title>
+    <meta charset="utf-8">
+
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesservervipwebsocket/js/web-socket-js/swfobject.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesservervipwebsocket/js/web-socket-js/web_socket.js') }}"></script>
+
+
+</head>
+<body onload="init();">
+<button onclick="onCloseClick(); return false;">close</button><br />
+<form action="#" onsubmit="sendHandshake(); return false;">
+    Visite :
+    <input type="text" id="input_visite">
+    <input type="submit" id="send_visite" value="Send Visite">
+</form>
+<div id="log"></div>
+
+
+<script type="text/javascript">
+
+    // Set URL of your WebSocketMain.swf here:
+    WEB_SOCKET_SWF_LOCATION = "{{  app.request.scheme ~'://' ~ app.request.httpHost ~ asset('bundles/capsciencesservervipwebsocket/js/web-socket-js/WebSocketMain.swf') }}";
+    // Set this to dump debug message from Flash to console.log:
+    WEB_SOCKET_DEBUG = true;
+
+    // Everything below is the same as using standard WebSocket.
+
+    var ws;
+
+    function init() {
+
+        // Connect to Web Socket.
+        // Change host/port here to your own Web Socket server.
+        ws = new WebSocket("ws://servervip2.wpottier.bdx.la:8000/");
+
+        // Set event handlers.
+        ws.onopen = function () {
+            output("onopen");
+        };
+        ws.onmessage = function (e) {
+            // e.data contains received string.
+            var msg = JSON.parse(e.data);
+            output("onmessage: " + e.data);
+            if(console != null && console.log != null) {
+                console.log(msg);
+            }
+
+            if(msg.command == 'servervip2.notification') {
+                if(msg.data.type == 'notif:general_information') {
+                    alert(msg.data.options['message']);
+                }
+            }
+        };
+        ws.onclose = function () {
+            output("onclose");
+        };
+        ws.onerror = function () {
+            output("onerror");
+        };
+
+    }
+
+    function sendHandshake() {
+        var input = document.getElementById("input_visite");
+        // You can send message to the Web Socket using ws.send.
+        ws.send(JSON.stringify({command: 'notification.handshake', data: {visite: input.value}}));
+
+        output("send: " + input.value);
+        input.disabled = true
+        document.getElementById("send_visite").disabled = true;
+    }
+
+    function onCloseClick() {
+        ws.close();
+    }
+
+    function output(str) {
+        var log = document.getElementById("log");
+        var escaped = str.replace(/&/, "&amp;").replace(/</, "&lt;").
+                replace(/>/, "&gt;").replace(/"/, "&quot;"); // "
+        log.innerHTML = escaped + "<br>" + log.innerHTML;
+    }
+
+</script>
+</body>
+</html>

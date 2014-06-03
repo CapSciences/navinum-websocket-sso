@@ -1,0 +1,18 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{% block content %}
+    {% if user %}
+    Your user profile is
+    <pre>
+        {{ dump(profile) }}
+      </pre>
+    {% else %}
+        <fb:login-button></fb:login-button>
+    {% endif %}
+
+    {% if user %}
+        <a href="{{ url }}">Logout facebook</a>
+    {% else %}
+        <a href="{{ url }}">Login facebook</a>
+    {% endif %}
+{% endblock %}

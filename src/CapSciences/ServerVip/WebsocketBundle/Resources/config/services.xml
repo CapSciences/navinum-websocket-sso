@@ -1,0 +1,43 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="servervip2_websocket.websockets.message_handler.class">CapSciences\ServerVip\WebsocketBundle\Websockets\MessageHandler</parameter>
+
+        <parameter key="servervip2_websocket.websockets.handler.abstract_handler.class">CapSciences\ServerVip\WebsocketBundle\Websockets\Handler\AbstractHandler</parameter>
+        <parameter key="servervip2_websocket.websockets.handler.monitor_handler.class">CapSciences\ServerVip\WebsocketBundle\Websockets\Handler\MonitorHandler</parameter>
+        <parameter key="servervip2_websocket.websockets.handler.core_handler.class">CapSciences\ServerVip\WebsocketBundle\Websockets\Handler\CoreHandler</parameter>
+        <parameter key="servervip2_websocket.websockets.handler.notification_handler.class">CapSciences\ServerVip\WebsocketBundle\Websockets\Handler\NotificationHandler</parameter>
+
+    </parameters>
+
+    <services>
+        <service id="servervip2_websocket.websockets.message_handler" class="%servervip2_websocket.websockets.message_handler.class%">
+            <argument type="service" id="doctrine" />
+            <argument>global</argument>
+        </service>
+
+        <!-- Websocket Message Handler -->
+        <service id="servervip2_websocket.websockets.handler.abstract_handler" class="%servervip2_websocket.websockets.handler.abstract_handler.class%" abstract="true">
+            <call method="setServiceContainer">
+                <argument type="service" id="service_container" />
+            </call>
+        </service>
+
+        <service id="servervip2_websocket.websockets.handler.core_handler" class="%servervip2_websocket.websockets.handler.core_handler.class%" parent="servervip2_websocket.websockets.handler.abstract_handler">
+            <tag name="websocket.handler" namespace="core" />
+        </service>
+
+        <service id="servervip2_websocket.websockets.handler.notification_handler" class="%servervip2_websocket.websockets.handler.notification_handler.class%" parent="servervip2_websocket.websockets.handler.abstract_handler">
+            <tag name="websocket.handler" namespace="notification" />
+        </service>
+
+        <service id="servervip2_websocket.websockets.handler.monitor_handler" class="%servervip2_websocket.websockets.handler.monitor_handler.class%" parent="servervip2_websocket.websockets.handler.abstract_handler">
+            <tag name="websocket.handler" namespace="monitor" />
+        </service>
+    </services>
+
+</container>

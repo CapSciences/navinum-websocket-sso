@@ -1,0 +1,6 @@
+
+parameters:
+    mail_sender:  noreply@yourdomain.com
+
+    mail_activation_subject: "Validation du compte C.YOU"
+    mail_activation_template: ":Mailer:activation.html.twig"

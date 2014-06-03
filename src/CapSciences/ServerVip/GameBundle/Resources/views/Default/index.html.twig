@@ -1,0 +1,35 @@
+{% extends "CapSciencesServerVipLayoutBundle::base-front.html.twig" %}
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/capsciencesservervipgame/css/style.css') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/capsciencesservervipgame/css/bootstrap.min.css') }}"/>
+
+{% endblock %}
+
+{% block content %}
+    <table class="table">
+        {% for interactif in interactfs %}
+            {% if loop.index%nbByLine == 1 %}
+                <tr class="{{ cycle(['odd', 'even'], loop.index/nbByLine) }}">
+            {% endif %}
+            <td>
+                <a href="{{ path("game_description", {"guid": interactif.guid}) }}">
+                {% if interactif.logo %}
+                        <img src="{{ interactif.logo }}" alt="{{ interactif.logo }}" title="{{ interactif.libelle }}"
+                             width="100px" height="100px"/>
+                {% else %}
+                    <img src="{{ asset('bundles/capsciencesservervipgame/img/noimage.gif') }}" alt="no image"
+                         title="{{ interactif.libelle }}"
+                         width="100px" height="100px"/><br/>
+                {% endif %}
+                </a>
+                {{ interactif.libelle }}
+            </td>
+            {% if loop.index%   nbByLine == nbByLine %}
+                </tr>
+            {% endif %}
+        {% endfor %}
+    </table>
+{% endblock %}

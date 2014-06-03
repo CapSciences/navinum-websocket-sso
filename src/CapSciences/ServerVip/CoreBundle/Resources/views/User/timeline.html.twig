@@ -1,0 +1,41 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{% block content %}
+    {% if notifications %}
+        <div class="timeline">
+            <div class="notif-count">
+                {{ notifications|length }}
+            </div>
+        </div>
+        <div id="timelineContainer">
+            {% for notif in notifications %}
+                <div class="notificationContainer {{ cycle(['odd', 'even'], loop.index) }}">
+                    <div class="notification {{ cycle(['odd', 'even'], loop.index) }} ">
+                        <dl class="">
+                            <dt id="{{ notif.guid }}"><a>{{ notif.libelle }}</a> :</dt>
+                            <dd class="" id="{{ notif.guid }}_content">
+                                <p>{{ notif.parameter.message }}</p>
+
+                                <p class="time">{{ notif.time }}</p>
+                            </dd>
+                        </dl>
+                    </div>
+                    <div class="ancre">
+
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>{% trans %}Aucune notifications trouvée{% endtrans %}</p>
+    {% endif %}
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/jquery-vertical-timeline/libs.combined.min.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/jquery-vertical-timeline/jquery-vertical-timeline.min.js') }}"></script>
+    <script type="text/javascript"></script>
+{% endblock %}

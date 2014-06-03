@@ -1,0 +1,40 @@
+{% extends "CapSciencesServerVipLayoutBundle::base-front.html.twig" %}
+{% block css %}
+    {{ parent() }}
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/capsciencesservervipgame/css/bootstrap.min.css') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/capsciencesservervipgame/css/bootstrap-responsive.min.css') }}"/>
+    <link rel="stylesheet" type="text/css"
+          href="{{ asset('bundles/capsciencesservervipgame/css/style.css') }}"/>
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <div class="row" id="detail">
+            <div class="span2" id="logo">
+                <a href="{{ path("game_description", {"guid": interactif.guid}) }}">
+                    {% if interactif.logo %}
+                        <img src="{{ interactif.logo }}" alt="{{ interactif.logo }}" title="{{ interactif.libelle }}"
+                             width="100px" height="100px"/>
+                    {% else %}
+                        <img src="{{ asset('bundles/capsciencesservervipgame/img/noimage.gif') }}" alt="no image"
+                             title="{{ interactif.libelle }}"
+                             width="100px" height="100px"/><br/>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="span10" id="informations">
+                <h4>{{ interactif.libelle }}</h4>
+                <h6>Exposition name</h6>
+
+                <p>{{ interactif.synopsis }}</p>
+                <a class="btn btn-primary" href="{{ interactif.urlFichierInteractif }}">{% trans %}Start the game{% endtrans %}</a><br /><br />
+            </div>
+        </div>
+        <div class="row" id="image">
+            <div class="span4"><img src="{{ interactif.image1 }}" alt="" width="100%" height="100%"/></div>
+            <div class="span4"><img src="{{ interactif.image2 }}" alt="" width="100%" height="100%"/></div>
+            <div class="span4"><img src="{{ interactif.image3 }}" alt="" width="100%" height="100%"/></div>
+        </div>
+    </div>
+{% endblock %}

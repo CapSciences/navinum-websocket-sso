@@ -1,0 +1,54 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{% block content %}
+    <div class="page">
+        <h1>
+            {% if name == "login" %}
+                {% trans %}Lost login{% endtrans %} :
+            {% endif %}
+            {% if name == "password" %}
+                {% trans %}Lost password{% endtrans %} :
+            {% endif %}
+        </h1>
+        <h6>
+            {% if name == "login" %}
+                {% trans %}Choose how you want retrieve your login{% endtrans %} :
+            {% endif %}
+            {% if name == "password" %}
+                {% trans %}Choose how you want retrieve your password{% endtrans %} :
+            {% endif %}
+        </h6>
+        {% if name == "login" %}
+            <span class="form-button">
+                <a class="button" href="{{ path('capsciences_servervip_core_security_lostlogin',{'method':'email'}) }}">
+                    {% trans %}Email{% endtrans %}
+                </a>
+            </span>
+            ou
+            <span class="form-button">
+                <a class="button" href="{{ path('capsciences_servervip_core_security_lostlogin',{'method':'sms'}) }}">
+                    {% trans %}Mobile{% endtrans %}
+                </a>
+            </span>
+        {% endif %}
+        {% if name == "password" %}
+            <span class="form-button">
+                <a class="button" href="{{ path('capsciences_servervip_core_security_lostpassword',{'method':'email'}) }}">
+                    {% trans %}Email{% endtrans %}
+                </a>
+            </span>
+            ou
+            <span class="form-button">
+                <a class="button" href="{{ path('capsciences_servervip_core_security_lostpassword',{'method':'sms'}) }}">
+                    {% trans %}Mobile{% endtrans %}
+                </a>
+            </span>
+        {% endif %}
+        <div class="back-home">
+            <a href="{{ path('capsciences_servervip_core_security_login') }}">
+                {% trans %}Back{% endtrans %}
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

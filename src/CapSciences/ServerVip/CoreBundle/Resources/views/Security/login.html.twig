@@ -1,0 +1,105 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{# On utilise notre propre rendu de formulaire #}
+{% form_theme form _self %}
+
+{# redefinition des atribu des champs #}
+{% block widget_attributes %}
+    {% spaceless %}
+        id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required" aria-required="true" {% else %} aria-required="false" {% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
+        {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+    {% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block checkbox_widget %}
+    {% spaceless %}
+        <input type="checkbox" class="checkbox-inline" {{ block('widget_attributes') }}{% if value is defined %} value="{{ value }}"{% endif %}{% if checked %} checked="checked"{% endif %} />
+    {% endspaceless %}
+{% endblock checkbox_widget %}
+
+{% block content %}
+
+    <div class="page cols">
+        <div class="col" id="col1">
+            <h2 class="didac-title">{% trans %}Discover our galaxy{% endtrans %}</h2>
+            <div id="didacticiel"></div>
+        </div><!-- /#col1 -->
+
+        <div class="col" id="col2">
+            <form action="{{ path('capsciences_servervip_core_security_signup') }}" id="form-create" class="validate" method="post">
+                <h2>{% trans %}Register account{% endtrans %}</h2>
+                <div class="error">{{ form_errors(form) }}</div>
+
+                <div class="form-text">
+                    <label for="capsciences_servervip_core_user_pseudo_son">{% trans %}Login{% endtrans %}</label>
+                    {{ form_widget(form.pseudo_son) }}
+                    {{ form_errors(form.pseudo_son) }}
+                </div>
+                <div class="form-text">
+                    <label for="capsciences_servervip_core_user_email">{% trans %}Mail Address{% endtrans %}</label>
+                    {{ form_widget(form.email) }}
+                    {{ form_errors(form.email) }}
+                </div>
+                <div class="form-text">
+                    <label for="capsciences_servervip_core_user_password_son_first">{% trans %}Password{% endtrans %}</label>
+                    {{ form_widget(form.password_son.first) }}
+                    {{ form_errors(form.password_son.first) }}
+                </div>
+                <div class="form-text">
+                    <label for="capsciences_servervip_core_user_password_son_second">{% trans %}Password confirmation{% endtrans %}</label>
+                    {{ form_widget(form.password_son.second) }}
+                    {{ form_errors(form.password_son.second) }}
+                </div>
+                <div class="form-text">
+                    <label for="capsciences_servervip_core_user_has_newsletter" >{{ form_widget(form.has_newsletter) }} {% trans %}Newsletter signup{% endtrans %}</label>
+                    {{ form_errors(form.has_newsletter) }}
+                </div>
+                <div class="form-text">
+                    <label for="capsciences_servervip_core_user_has_cgu">{{ form_widget(form.has_cgu) }} {% trans %}I am agree to the <a target="_blank" href="http://servervip.projects.clever-age.net/cgu/cgu-fr.html">terms of service</a>.{% endtrans %}</label>
+                    {{ form_errors(form.has_cgu) }}
+                </div>
+                {{ form_rest(form) }}
+                <div class="form-button">
+                    <input type="submit" class="button" value="{{ "Signup"|trans }}"/>
+                </div>
+                <div class="form-button">
+                    <a href="{{ facebook_login }}" class="button facebook">Se connecter avec Facebook</a>
+                </div>
+            </form>
+        </div><!-- /#col2 -->
+        <div class="col" id="col3">
+            <form action="{{ path("_login_check") }}" id="form-already" class="validate" method="post">
+                <h2>{% trans %}You have an account ?&nbsp;{% endtrans %}</h2>
+
+                {% if error is defined and error is not null %}
+                    <div class="error">{{ error|trans }}</div>
+                {% endif %}
+
+                <div class="form-text">
+                    <label for="_username">{% trans %}Login{% endtrans %}</label>
+                    <input type="text" name="_username" id="_username" value="" aria-required="true"{% if last_username is defined %} value="{{ last_username }}"{% endif %} />
+                    <div class="helper">
+                        <a href="{{ path('capsciences_servervip_core_security_retrieve',{'info':'login'}) }}">
+                            {% trans %}I forgot my login{% endtrans %}
+                        </a>
+                    </div>
+                </div>
+                <div class="form-text">
+                    <label for="_password">{% trans %}Password{% endtrans %}</label>
+                    <input type="password" name="_password" id="_password" value="" aria-required="true" />
+                    <div class="helper">
+                        <a href="{{ path('capsciences_servervip_core_security_retrieve',{'info':'password'}) }}">
+                            {% trans %}I forgot my password{% endtrans %}
+                        </a>
+                    </div>
+                </div>
+                <div class="form-button">
+                    <button class="button">{% trans %}Signin{% endtrans %}</button>
+                </div>
+                <div class="form-button">
+                    <a href="{{ facebook_login }}" class="button facebook">Se connecter avec Facebook</a>
+                </div>
+            </form>
+        </div>
+    </div> <!-- /page -->
+{% endblock %}

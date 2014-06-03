@@ -1,0 +1,42 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+
+    <parameters>
+        <parameter key="cap_sciences_server_vip_navinum.providers.api_provider.class">CapSciences\ServerVip\NavinumBundle\Providers\ApiProvider</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.visite.class">CapSciences\ServerVip\NavinumBundle\Providers\Visite</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.rfid.class">CapSciences\ServerVip\NavinumBundle\Providers\Rfid</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.visiteur.class">CapSciences\ServerVip\NavinumBundle\Providers\Visiteur</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.peripherique.class">CapSciences\ServerVip\NavinumBundle\Providers\Peripherique</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.flotte.class">CapSciences\ServerVip\NavinumBundle\Providers\Flotte</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.interactif.class">CapSciences\ServerVip\NavinumBundle\Providers\Interactif</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.notification.class">CapSciences\ServerVip\NavinumBundle\Providers\Notification</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.message.class">CapSciences\ServerVip\NavinumBundle\Providers\Message</parameter>
+        <parameter key="cap_sciences_server_vip_navinum.providers.langue.class">CapSciences\ServerVip\NavinumBundle\Providers\Langue</parameter>
+    </parameters>
+
+    <services>
+        <!-- ServerVip API -->
+        <service id="cap_sciences_server_vip_navinum.providers.api_provider" class="cap_sciences_server_vip_navinum.providers.api_provider.class" abstract="true">
+            <argument type="service" id="jms_serializer" />
+            <argument>%servervip1_url%</argument>
+            <argument type="service" id="logger" />
+
+        </service>
+
+        <service id="cap_sciences_server_vip_navinum.providers.visite" class="%cap_sciences_server_vip_navinum.providers.visite.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.rfid" class="%cap_sciences_server_vip_navinum.providers.rfid.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.visiteur" class="%cap_sciences_server_vip_navinum.providers.visiteur.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.peripherique" class="%cap_sciences_server_vip_navinum.providers.peripherique.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.flotte" class="%cap_sciences_server_vip_navinum.providers.flotte.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.interactif" class="%cap_sciences_server_vip_navinum.providers.interactif.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.notification" class="%cap_sciences_server_vip_navinum.providers.notification.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.message" class="%cap_sciences_server_vip_navinum.providers.message.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+        <service id="cap_sciences_server_vip_navinum.providers.langue" class="%cap_sciences_server_vip_navinum.providers.langue.class%" parent="cap_sciences_server_vip_navinum.providers.api_provider" />
+
+    </services>
+
+</container>

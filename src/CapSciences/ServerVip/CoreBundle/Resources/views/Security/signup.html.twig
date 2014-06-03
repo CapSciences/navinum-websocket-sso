@@ -1,0 +1,19 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{% block content %}
+        <div class="page modal-info">
+            <h2>{% trans %}Account created{% endtrans %}</h2>
+
+            <p>
+                {% trans %}An email has been sent.{% endtrans %}<br>
+                {% trans %}Click on the inbox link to validate your email address and activate your account.{% endtrans %}
+            </p>
+
+            <div class="form-button">
+                <a href="{{ path('capsciences_servervip_core_security_login') }}" class="button">
+                    {% trans %}Go to signin{% endtrans %}
+                </a>
+            </div>
+
+        </div> <!-- /page -->
+{% endblock %}

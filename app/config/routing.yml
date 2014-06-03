@@ -1,0 +1,40 @@
+cap_sciences_server_vip_game:
+    resource: "@CapSciencesServerVipGameBundle/Controller/"
+    type:     annotation
+    prefix:   /game
+
+cap_sciences_server_vip_navinum:
+    resource: "@CapSciencesServerVipNavinumBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cap_sciences_server_vip_core:
+    resource: "@CapSciencesServerVipCoreBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cap_sciences_server_vip_layout:
+    resource: "@CapSciencesServerVipLayoutBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+cap_sciences_server_vip_websocket:
+    resource: "@CapSciencesServerVipWebsocketBundle/Controller/"
+    type:     annotation
+    prefix:   /websockets
+
+_login_check:
+    pattern: /user/security/login_check
+
+
+fos_oauth_server_token:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/token.xml"
+
+fos_oauth_server_authorize:
+    resource: "@FOSOAuthServerBundle/Resources/config/routing/authorize.xml"
+
+
+# Internal routing configuration to handle ESI
+#_internal:
+#    resource: "@FrameworkBundle/Resources/config/routing/internal.xml"
+#    prefix:   /_internal

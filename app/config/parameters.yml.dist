@@ -1,0 +1,30 @@
+parameters:
+    database_driver:   pdo_mysql
+    database_host:     127.0.0.1
+    database_port:     ~
+    database_name:     yourbdd
+    database_user:     yourlogin
+    database_password: yourpassword
+
+    mailer_transport:  smtp
+    mailer_host:       127.0.0.1
+    mailer_user:       ~
+    mailer_password:   ~
+
+    secret:            ThisTokenIsNotSoSecretChangeIt
+
+    servervip1_url:    http://login:mdp@api2.yourdomain.com/api.php/
+
+    zmq_ip:            127.0.0.1
+    zmq_port:          8084
+
+    websocket_ip:      0.0.0.0
+    websocket_port:    8083
+
+    delai_token: 172800 # 2 jours
+    api_facebook_id:       # ID de l’application/Clé de l’API
+    api_facebook_secret:   # Clé secrète
+    api_facebook_name:    http://apps.facebook.com/capsciences_test/ # App Namespace
+    api_facebook_server:  http://capsciences.local/ # URL du site
+    api_facebook_scope:   publish_actions, user_actions.music, user_actions.news, user_actions.video, user_games_activity, email, read_friendlists  # Permission
+    default_redirect_uri: 'http://capsciences_drupal.local/'

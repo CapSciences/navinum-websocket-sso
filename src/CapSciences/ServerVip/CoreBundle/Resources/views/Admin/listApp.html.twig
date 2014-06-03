@@ -1,0 +1,43 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base.html.twig' %}
+
+{% block content %}
+    <a class="btn btn-success"
+       href="{{ path("capsciences_servervip_core_admin_addapp") }}">
+        {% trans %}Add{% endtrans %}
+    </a>
+    <br/><br/>
+    <table class="table table-striped table-bordered">
+        <tr>
+            <th class="hidden-phone">{% trans %}Id{% endtrans %}</th>
+            <th>{% trans %}Name{% endtrans %}</th>
+            {#<th>{% trans %}RandomId{% endtrans %}</th>#}
+            <th class="hidden-phone">{% trans %}Host{% endtrans %}</th>
+            <th>{% trans %}Key{% endtrans %}</th>
+            <th>{% trans %}Secret{% endtrans %}</th>
+            <th>{% trans %}Actions{% endtrans %}</th>
+        </tr>
+        {% for app in apps %}
+            <tr>
+                <td class="hidden-phone">{{ app.id }}</td>
+                <td>{{ app.name }}</td>
+                {#<td>{{ app.randomId }}</td>#}
+                <td class="hidden-phone">
+                    <ul>
+                        {% for uri in app.redirectUris %}
+                            <li>{{ uri }}</li>
+                        {% endfor %}
+                    </ul>
+                </td>
+                <td>{{ app.id }}_{{ app.randomId }}</td>
+                <td>{{ app.secret }}</td>
+                <td>
+                    <a class="btn btn-danger confirm-delete"
+                       href="{{ path('capsciences_servervip_core_admin_delapp',{'id':app.id}) }}"
+                       onclick="return confirm('Are you sure you want delete this authorization?')">{% trans %}
+                        Delete{% endtrans %}</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+
+{% endblock %}

@@ -1,0 +1,18 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{% block content %}
+    <div class="page modal-info">
+        <h2>{% trans %}Account activated{% endtrans %}</h2>
+
+        <p>
+            {% trans %}Your account is activated.{% endtrans %}
+        </p>
+
+        <div class="form-button">
+            <a href="{{ path('capsciences_servervip_core_security_login') }}" class="button">
+                {% trans %}Go to signin{% endtrans %}
+            </a>
+        </div>
+
+    </div> <!-- /page -->
+{% endblock %}

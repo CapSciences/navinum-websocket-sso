@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<html class="no-js" lang="{{ app.request.locale }}">
+<!-- include -head -->
+<head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/>
+    <meta name="viewport" content="width=1024"/>
+    <!--<meta name="viewport"                                   content="initial-scale=1.0"       /> -->
+    <link rel="shortcut icon" type="image/x-icon" href="{{ asset('favicon.ico') }}"/>
+    <link rel="apple-touch-icon-precomposed" href="../favicon.png"/>
+    {% block css %}
+        <link rel="stylesheet" type="text/css"
+              href="{{ asset('bundles/capsciencesserverviplayout/css/vendor/bootstrap.min.css') }}"/>
+        <link rel="stylesheet" type="text/css" href="{{ asset('bundles/capsciencesserverviplayout/css/styles.css') }}"/>
+    {% endblock %}
+    <title>Se connecter au service</title>
+</head>
+<!-- include -body -->
+<!--[if IE 9]>
+<body class="ie ie9"><![endif]-->
+<!--[if IE 8]>
+<body class="ie ie8"><![endif]-->
+<!--[if IE 7]>
+<body class="ie ie7"><![endif]-->
+<!--[if IE 6]>
+<body class="ie ie6"><![endif]-->
+<!--[if !IE]>-->
+<body>           <!--<![endif]-->
+<script src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/browserdetect.js') }}"></script>
+<script src="{{ asset('bundles/capsciencesserverviplayout/js/init.js') }}"></script>
+<!-- include page -->
+<div id="page" class="connexion">
+    <!-- include header -->
+    <div id="header">
+        <div class="page">
+            <h1 class="hide">Connexion</h1>
+        </div>
+        {{ render(controller('CapSciencesServerVipLayoutBundle:Language:localeSwitcher')) }}
+    </div>
+    <!-- include content -->
+    <div id="content">
+        {% block content %}{% endblock %}
+    </div>
+    <!-- /#content -->
+</div>
+{% block js %}
+    <script src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/jquery.ie.cors.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/bootstrap.min.js') }}"></script>
+    <script src="{{ asset('bundles/capsciencesserverviplayout/js/behaviours.js') }}"></script>
+    <script src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/jquery.hashgrid.js') }}"></script>
+{% endblock %}
+</body>
+</html>

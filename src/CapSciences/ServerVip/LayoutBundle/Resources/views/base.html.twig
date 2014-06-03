@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CapScience::ServerVip2.0</title>
+    <meta charset="utf-8">
+
+    <link href="{{ asset('bundles/capsciencesserverviplayout/css/vendor/bootstrap.css') }}" rel="stylesheet" charset="utf-8"/>
+    <link href="{{ asset('bundles/capsciencesserverviplayout/css/servervip.css') }}" rel="stylesheet" charset="utf-8"/>
+    <link href="{{ asset('bundles/capsciencesserverviplayout/css/vendor/bootstrap-responsive.css') }}" rel="stylesheet" charset="utf-8"/>
+    {% block head_after_stylesheets %}{% endblock %}
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <script type="text/javascript" src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/jquery.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/bootstrap.js') }}"></script>
+    {% block javascript_after %}{% endblock %}
+</head>
+<body>
+
+<header class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </a>
+            <a class="brand" href="{{ path('capsciences_servervip_core_default_index') }}">Cap Sciences - ServerVip2</a>
+
+            <div class="nav-collapse">
+                <ul class="nav">
+                    <li class="{% block nav_class_active_home %}{% endblock %}"><a
+                                href="{{ path('capsciences_servervip_websocket_default_monitor') }}">{% trans %}Websockets{% endtrans %}</a></li>
+                    <li><a
+                                href="{{ path('capsciences_servervip_core_admin_listapp') }}">{% trans %}SSO authorization{% endtrans %}</a></li>
+                </ul>
+
+                <ul class="nav pull-right">
+                    <li><a id="websocket_state">WS:NotConnected</a></li>
+                </ul>
+
+            </div>
+        </div>
+    </div>
+</header>
+
+<div class="container">
+{% block content %}{% endblock %}
+</div>
+
+{% block javascript_bottom %}{% endblock %}
+</body>
+</html>

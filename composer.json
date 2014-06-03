@@ -1,0 +1,82 @@
+{
+    "name":        "capsciennces/servervip2",
+    "description": "The servervip2 for capsciences",
+    "autoload":    {
+        "psr-0":{
+            "":"src/"
+        }
+    },
+    "require":     {
+        "php":                          ">=5.3.3",
+        "symfony/symfony":              "2.3.*",
+        "doctrine/orm":                 ">=2.2.3,<2.4-dev",
+        "doctrine/doctrine-bundle":     "1.2.*",
+        "twig/extensions":              "1.0.*",
+        "symfony/assetic-bundle":       "2.3.*",
+        "symfony/swiftmailer-bundle":   "2.3.*",
+        "symfony/monolog-bundle":       "2.3.*",
+        "sensio/distribution-bundle":   "2.3.*",
+        "sensio/framework-extra-bundle":"2.3.*",
+        "sensio/generator-bundle":      "2.3.*",
+        "incenteev/composer-parameter-handler": "~2.0",
+        "kriswallsmith/assetic":        "1.1.*@dev",
+        "cboden/Ratchet":               "dev-master",
+        "react/zmq":                    "dev-master",
+        "friendsofsymfony/oauth-server-bundle": "dev-master",
+        "react/socket":                 "0.2.*",
+        "guzzle/http":                  "*",
+        "guzzle/guzzle":                "*",
+        "jms/aop-bundle": "dev-master",
+        "jms/di-extra-bundle": "dev-master",
+        "jms/serializer-bundle": "dev-master",
+        "facebook/php-sdk": "dev-master"
+    },
+    "repositories": {
+        "ratchet-unofficial": {
+            "type": "package",
+            "package":{
+                "version": "dev-master",
+                "name":    "cboden/Ratchet",
+                "source":  {
+                    "url":      "https://github.com/wpottier/Ratchet.git",
+                    "type":     "git",
+                    "reference":"master"
+                },
+                "autoload":{
+                    "psr-0":{
+                        "Ratchet\\Tests":"tests",
+                        "Ratchet":       "src"
+                    }
+                }
+            }
+        }
+    },
+    "scripts":     {
+        "post-install-cmd":[
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+        ],
+        "post-update-cmd": [
+            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
+            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile"
+        ]
+    },
+    "config": {
+        "bin-dir": "bin"
+    },
+    "minimum-stability": "stable",
+    "extra":       {
+        "symfony-app-dir":       "app",
+        "symfony-web-dir":       "web",
+        "symfony-assets-install":"symlink",
+        "incenteev-parameters": {
+            "file": "app/config/parameters.yml"
+        }
+    }
+}

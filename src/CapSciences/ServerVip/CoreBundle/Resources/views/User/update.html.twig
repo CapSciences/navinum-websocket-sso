@@ -1,0 +1,156 @@
+{% extends 'CapSciencesServerVipLayoutBundle::base-front.html.twig' %}
+
+{# On utilise notre propre rendu de formulaire #}
+{% form_theme form _self %}
+
+{% block form_row %}
+    {% spaceless %}
+        <div class="form-text">
+            <span>{{ form_label(form) }}</span>
+            <span>{{ form_widget(form) }}</span>
+            <span>{{ form_errors(form) }}</span>
+        </div>
+    {% endspaceless %}
+{% endblock form_row %}
+
+{# redifinition du blockform_widget #}
+{% block form_widget_simple %}
+    {% spaceless %}
+        {% set type = type|default('text') %}
+        <input type="{{ type }}" {{ block('widget_attributes') }} {% if value is not empty %}value="{{ value }}" {% endif %} />
+    {% endspaceless %}
+{% endblock form_widget_simple %}
+
+{% block form_widget_compound %}
+    {% spaceless %}
+        <div {{ block('widget_container_attributes') }}>
+            {% if form.parent is empty %}
+                {{ form_errors(form) }}
+            {% endif %}
+            {{ block('form_rows') }}
+            {{ form_rest(form) }}
+        </div>
+    {% endspaceless %}
+{% endblock form_widget_compound %}
+{# redefinition des attributs des champs #}
+{% block widget_attributes %}
+    {% spaceless %}
+        id="{{ id }}" name="{{ full_name }}"{% if read_only %} readonly="readonly"{% endif %}{% if disabled %} disabled="disabled"{% endif %}{% if required %} required="required" aria-required="true" {% else %} aria-required="false" {% endif %}{% if max_length %} maxlength="{{ max_length }}"{% endif %}{% if pattern %} pattern="{{ pattern }}"{% endif %}
+        {% for attrname, attrvalue in attr %}{% if attrname in ['placeholder', 'title'] %}{{ attrname }}="{{ attrvalue|trans({}, translation_domain) }}" {% else %}{{ attrname }}="{{ attrvalue }}" {% endif %}{% endfor %}
+    {% endspaceless %}
+{% endblock widget_attributes %}
+
+{% block content %}
+    <div class="col1">
+        <div id="message">
+            <ul>
+                {% for msg in messages %}
+                    <li>{{ msg }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <form action="{{ path('capsciences_servervip_core_user_update') }}" method="post" {{ form_enctype(form) }}
+              id="form-already">
+
+            {{ form_widget(form) }}
+            <input type="hidden" name="redirect_uri" value="{{ redirect_uri }}"/>
+            <span class="form-button">
+            <input type="submit" class="button"/>
+         </span>
+         <span class="form-button">
+             <a class="button" onclick="verif();return false;" href="#">
+                 {% trans %}Delete{% endtrans %}
+             </a>
+         </span>
+        </form>
+        <script type="text/javascript">
+            function verif() {
+                check = confirm('{% trans %}Are you sure you want delete your account ?{% endtrans %}')
+                if (check == true) {
+                    window.open("{{ path('capsciences_servervip_core_user_delete', {'redirect_uri':'http://capsciences_drupal.local/'} ) }}", "_self")
+                }
+            }
+        </script>
+    </div>
+    <div class="col2" style="display:none">
+        <div id="capture">
+            <div id="result"></div>
+            <p id="guid" style="display:none">{{ app.user.guid }}</p>
+        </div>
+        <button class="btn again">Try again</button>
+        <button class="btn btn-success save">Save and send</button>
+
+    </div>
+{% endblock %}
+
+{% block js %}
+    {{ parent() }}
+
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/noty/jquery.noty.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/noty/layouts/top.js') }}"></script>
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/noty/themes/default.js') }}"></script>
+
+
+    <script type="text/javascript"
+            src="{{ asset('bundles/capsciencesserverviplayout/js/vendor/photobooth.min.js') }}"></script>
+
+
+    <script type="text/javascript">
+        $('.again').text("Recommencer");
+        $('.save').text("Enregistrer");
+
+        $('.again').hide();
+        $('.save').hide();
+
+
+        function loadPhoto() {
+            $('#capture').photobooth().on("image", function (event, dataUrl) {
+                $("#result").html('<img src="' + dataUrl + '" >');
+                $(".photobooth").hide();
+                $("#result").show();
+                $('#capture').data('photobooth').pause();
+                $('.again').show();
+                $('.save').show();
+            });
+        }
+
+        $('.again').click(function () {
+            $("#result").hide();
+            $(".photobooth").show();
+            $('#capture').data('photobooth').resume();
+            $('.again').hide();
+            $('.save').hide();
+        });
+
+        $('.save').click(function () {
+            var img = $('#result img').attr('src').substring(22,($('#result img').attr('src').length));
+            var guid = $('#guid').html();
+            $.ajax({
+                type: "POST",
+                url: "{{ path('capsciences_servervip_core_user_sendphoto') }}",
+                data: {guid:guid,photo:img},
+                success: function(d){
+                    var success = "{% trans %}Your photo has been send{% endtrans %}";
+                    noty({text: success,type:'success',timeout:3000});
+                    $('.save').hide();
+                },
+                error:function(e){
+                    var error = "{% trans %}Error during photo send{% endtrans %}"+" : "+e;
+                    noty({text: error,type:'error',timeout:3000});
+                }
+            });
+        });
+
+        if((BrowserDetect.browser.indexOf('Firefox') >=0 ||  BrowserDetect.browser.indexOf('Chrome') >=0) && typeof Photobooth != 'undefined'){
+            $('.col2').show();
+            loadPhoto();
+        }else{
+            // cannot take photo with ie
+
+        }
+
+    </script>
+{% endblock %}
